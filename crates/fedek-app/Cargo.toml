@@ -1,0 +1,20 @@
+[package]
+name = "fedek-app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow = "1.0.104"
+chrono = "0.4.45"
+directories = "6.0.0"
+eframe = "0.37.0"
+egui = "0.37.0"
+egui_extras = "0.37.0"
+fedek-core = { version = "0.1.0", path = "../fedek-core" }
+fedek-report = { version = "0.1.0", path = "../fedek-report" }
+open = "5.4.4"
+rfd = "0.17.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4"] }

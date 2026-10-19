@@ -1,0 +1,12 @@
+[package]
+name = "fedek-report"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+fedek-core = { version = "0.1.0", path = "../fedek-core" }
+thiserror = "2.0.21"
+typst = "0.15.1"
+typst-layout = "0.15.1"
+typst-pdf = "0.15.1"

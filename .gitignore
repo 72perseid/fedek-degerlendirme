@@ -1,0 +1,5 @@
+/target
+# Real course files and reports contain student data: never commit them.
+*.xlsx
+*.pdf
+!fixtures/*.xlsx

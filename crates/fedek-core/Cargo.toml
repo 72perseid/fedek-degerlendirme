@@ -1,0 +1,18 @@
+[package]
+name = "fedek-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+calamine = "0.37.0"
+ego-tree = "0.11.0"
+rust_xlsxwriter = "0.100.0"
+scraper = "0.27.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+thiserror = "2.0.21"
+ureq = "3.4.2"
+
+[dev-dependencies]
+approx = "0.5.1"
