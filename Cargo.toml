@@ -3,7 +3,7 @@ resolver = "2"
 members = ["crates/fedek-report", "crates/fedek-core", "crates/fedek-app"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 

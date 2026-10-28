@@ -1578,7 +1578,7 @@ checksum = "3296eb97d869113eaf148a6bdf01884e90b3828ad7ae2340b0f93362fc158611"
 
 [[package]]
 name = "fedek-app"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "chrono",
@@ -1597,7 +1597,7 @@ dependencies = [
 
 [[package]]
 name = "fedek-core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "approx",
  "calamine",
@@ -1612,7 +1612,7 @@ dependencies = [
 
 [[package]]
 name = "fedek-report"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "fedek-core",
  "thiserror 2.0.21",
