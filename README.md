@@ -29,7 +29,8 @@ uygulama elle girişle aynen çalışır.
 
 Eski Excel dosyaları **içe aktarılır**; veriler kullanıcının uygulama klasöründe JSON olarak
 kendiliğinden kaydedilir (Linux: `~/.local/share/fedekdegerlendirme`, Windows:
-`%APPDATA%\Arkeoloji\FEDEK Degerlendirme\data`).
+`%APPDATA%\Arkeoloji\FEDEK Degerlendirme\data`, Mac:
+`~/Library/Application Support/tr.Arkeoloji.FEDEK-Degerlendirme`).
 
 ## Yapı
 
@@ -48,7 +49,20 @@ fixtures/           anonimleştirilmiş gerçek şablon; "altın" testlerin kayn
    **Daha fazla bilgi → Yine de çalıştır** deyin (dosya imzalı değildir).
 4. Verileriniz `%APPDATA%\Arkeoloji\FEDEK Degerlendirme\data` klasöründe saklanır.
 
-Her `v*` etiketi GitHub Actions'ta Windows ve Linux sürümlerini derleyip Releases'a ekler.
+## Mac'te kurulum
+
+1. **Releases** sayfasından `fedek-app-macos.zip` dosyasını indirip açın; içinden
+   **FEDEK Degerlendirme.app** çıkar. Uygulamalar klasörüne ya da Masaüstüne taşıyın.
+   Tek dosya hem Apple Silicon (M1/M2/M3…) hem Intel Mac'lerde çalışır (macOS 11+).
+2. Uygulama Apple tarafından imzalanmadığı için ilk açılışta çift tıklama engellenir.
+   Uygulamaya **sağ tıklayıp Aç** deyin ve çıkan pencerede yine **Aç**'ı seçin; bu bir
+   kez yeter. Hâlâ açılmıyorsa Sistem Ayarları → Gizlilik ve Güvenlik altındaki
+   **Yine de Aç** düğmesini kullanın.
+3. Verileriniz `~/Library/Application Support/tr.Arkeoloji.FEDEK-Degerlendirme`
+   klasöründe saklanır.
+
+Her `v*` etiketi GitHub Actions'ta Windows, Linux ve macOS sürümlerini derleyip
+Releases'a ekler.
 
 ## Derleme
 
@@ -63,8 +77,8 @@ cargo build --release -p fedek-app   # tek dosya: target/release/fedek-app(.exe)
 Geliştirici anahtarları: `--open-last`, `--step info|outcomes|assessments|results`, `--programs`,
 `--bologna <url>` (verilen Bologna ders sayfasından yeni ders açar).
 
-Windows için derleme `.github/workflows/build.yml` ile GitHub Actions üzerinde yapılır
-(her sürüm için `fedek-app.exe` artefaktı üretir). Windows'ta WebView, Java vb.
+Windows, Linux ve macOS derlemeleri `.github/workflows/build.yml` ile GitHub Actions
+üzerinde yapılır (her sürüm için `fedek-app.exe`, `fedek-app` ve `fedek-app-macos.zip`). Windows'ta WebView, Java vb.
 hiçbir ek bileşen gerekmez; `.exe` tek başına çalışır.
 
 ## Doğrulama

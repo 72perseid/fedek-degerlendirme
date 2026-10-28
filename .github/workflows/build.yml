@@ -49,3 +49,53 @@ jobs:
         with:
           name: fedek-app-linux
           path: target/release/fedek-app
+
+  macos:
+    runs-on: macos-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release -p fedek-app --target aarch64-apple-darwin
+      - run: cargo build --release -p fedek-app --target x86_64-apple-darwin
+      - name: Universal binary + .app bundle
+        run: |
+          set -e
+          VER=$(grep -m1 "^version" Cargo.toml | cut -d'"' -f2)
+          APP="FEDEK Degerlendirme.app"
+          mkdir -p "$APP/Contents/MacOS"
+          lipo -create \
+            target/aarch64-apple-darwin/release/fedek-app \
+            target/x86_64-apple-darwin/release/fedek-app \
+            -output "$APP/Contents/MacOS/fedek-app"
+          cat > "$APP/Contents/Info.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleName</key><string>FEDEK Degerlendirme</string>
+            <key>CFBundleDisplayName</key><string>FEDEK Değerlendirme</string>
+            <key>CFBundleIdentifier</key><string>tr.edu.ege.arkeoloji.fedek</string>
+            <key>CFBundleVersion</key><string>$VER</string>
+            <key>CFBundleShortVersionString</key><string>$VER</string>
+            <key>CFBundleExecutable</key><string>fedek-app</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>LSMinimumSystemVersion</key><string>11.0</string>
+            <key>NSHighResolutionCapable</key><true/>
+          </dict>
+          </plist>
+          PLIST
+          codesign --force --deep --sign - "$APP"
+          ditto -c -k --keepParent "$APP" fedek-app-macos.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fedek-app-macos
+          path: fedek-app-macos.zip
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: fedek-app-macos.zip
