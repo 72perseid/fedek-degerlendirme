@@ -54,10 +54,12 @@ fixtures/           anonimleştirilmiş gerçek şablon; "altın" testlerin kayn
 1. **Releases** sayfasından `fedek-app-macos.zip` dosyasını indirip açın; içinden
    **FEDEK Degerlendirme.app** çıkar. Uygulamalar klasörüne ya da Masaüstüne taşıyın.
    Tek dosya hem Apple Silicon (M1/M2/M3…) hem Intel Mac'lerde çalışır (macOS 11+).
-2. Uygulama Apple tarafından imzalanmadığı için ilk açılışta çift tıklama engellenir.
-   Uygulamaya **sağ tıklayıp Aç** deyin ve çıkan pencerede yine **Aç**'ı seçin; bu bir
-   kez yeter. Hâlâ açılmıyorsa Sistem Ayarları → Gizlilik ve Güvenlik altındaki
-   **Yine de Aç** düğmesini kullanın.
+2. Uygulama Apple tarafından onaylanmadığı için ilk açılışta "Apple could not verify…"
+   uyarısı çıkar. **Done** deyin, **Sistem Ayarları → Gizlilik ve Güvenlik** sayfasının en
+   altındaki **Yine de Aç (Open Anyway)** düğmesine basıp parolanızla onaylayın; uygulamayı
+   yeniden açın. Bu işlem her Mac'te bir kez yeter. (Düğme yalnızca engellenen bir açma
+   denemesinden hemen sonra görünür.) Terminal kullananlar için alternatif:
+   `xattr -cr "/Applications/FEDEK Degerlendirme.app"`
 3. Verileriniz `~/Library/Application Support/tr.Arkeoloji.FEDEK-Degerlendirme`
    klasöründe saklanır.
 
