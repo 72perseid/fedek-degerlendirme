@@ -320,22 +320,26 @@ pub fn fetch_html(url: &str) -> Result<String, BolognaError> {
         .user_agent("FEDEK-Degerlendirme/0.1 (+egui; Rust)")
         .build()
         .into();
-    let mut response = agent.get(&normalize_url(url)).call().map_err(|e| BolognaError::Fetch(describe(e)))?;
+    let full = normalize_url(url);
+    let host = full.split("//").nth(1).and_then(|r| r.split(['/', '?', '#']).next()).unwrap_or("").to_string();
+    let mut response = agent.get(&full).call().map_err(|e| BolognaError::Fetch(describe(e, &host)))?;
     response
         .body_mut()
         .read_to_string()
-        .map_err(|e| BolognaError::Fetch(describe(e)))
+        .map_err(|e| BolognaError::Fetch(describe(e, "")))
 }
 
 /// Plain-language reasons for the people who will read them.
-fn describe(e: ureq::Error) -> String {
+fn describe(e: ureq::Error, host: &str) -> String {
+    let at = if host.is_empty() { String::new() } else { format!(" (adres: {host})") };
     match e {
         ureq::Error::StatusCode(404) => "sayfa bulunamadı (404). Bağlantıyı tarayıcıdan yeniden kopyalayın.".into(),
         ureq::Error::StatusCode(code) => format!("sunucu {code} hatası verdi. Biraz sonra yeniden deneyin."),
         ureq::Error::Timeout(_) => "sunucu 20 saniye içinde yanıt vermedi. İnternet bağlantınızı kontrol edin.".into(),
-        ureq::Error::ConnectionFailed | ureq::Error::HostNotFound => "sunucuya ulaşılamadı. İnternet bağlantınızı ve adresi kontrol edin.".into(),
+        ureq::Error::ConnectionFailed | ureq::Error::HostNotFound => format!("sunucuya ulaşılamadı{at}. İnternet bağlantınızı ve adresi kontrol edin."),
+        ureq::Error::Io(io) if io.to_string().contains("lookup") => format!("sunucu adı bulunamadı{at}. Adresi tarayıcıdan yeniden kopyalayın; internet bağlantınızı kontrol edin. [{io}]"),
         ureq::Error::BadUri(_) => "bu bir internet adresi gibi görünmüyor.".into(),
-        other => other.to_string(),
+        other => format!("{other}{at}"),
     }
 }
 
